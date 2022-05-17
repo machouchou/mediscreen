@@ -61,9 +61,9 @@ public class PatientServiceImpl implements IPatientService {
 			errorDescription = "Enter a valid idPatient !"; 
 			return utility.createResponseWithErrors(Constant.ERROR_MESSAGE_IDPATIENT_REQUIRED, errorDescription);
 		}
-		patientRepository.findById(idPatient).orElse(null);
+		Patient patient = patientRepository.findById(idPatient).orElse(null);
 		
-		new Utility().createResponseWithSuccess(response, idPatient);
+		new Utility().createResponseWithSuccess(response, patient);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

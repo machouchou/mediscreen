@@ -1,6 +1,7 @@
 package com.mediscreen;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -135,5 +136,20 @@ public class PatientRepositiryTest {
 			
 			
 			Assertions.assertThat(existingPatient.getFirstName().equalsIgnoreCase("Ramesh"));
+		}
+		
+		// JUnit test for getPatientById
+		@Test
+		public void getPatientByFirstAndLastname_existingPatientTest_PatientFound() {
+				
+			
+			assertTrue(patientService.getPatientByFirstNameAndLastName("Alex", "Lopes").isPresent());
+		}
+		
+		@Test
+		public void getPatientByIdTest_existingPatientTest_PatientFound() {
+				
+			
+			assertFalse(patientService.getPatientById(2).equals(patientRepository.findById(2)));
 		}
 }
