@@ -32,7 +32,7 @@ import com.mediscreen.repository.PatientRepository;
 import com.mediscreen.service.IPatientService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200") 
 public class PatientController {
 	
 	static final Logger logger = LogManager.getLogger(PatientController.class);

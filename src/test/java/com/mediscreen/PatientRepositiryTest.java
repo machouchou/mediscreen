@@ -13,8 +13,6 @@ import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -24,7 +22,7 @@ import com.mediscreen.repository.PatientRepository;
 import com.mediscreen.service.PatientServiceImpl;
 
 @SpringBootTest
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 @TestPropertySource("/applicationTest.properties")
 public class PatientRepositiryTest {
 	
