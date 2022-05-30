@@ -5,12 +5,13 @@ import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 
+import com.mediscreen.exception.PatientDuplicateException;
 import com.mediscreen.model.Patient;
 import com.mediscreen.model.Response;
 
 public interface IPatientService {
 	
-	ResponseEntity<Response> savePatient(Patient patient);
+	ResponseEntity<Response> savePatient(Patient patient) throws PatientDuplicateException;
 	
 	ResponseEntity<Response> getPatientById(int idPatient);
 	

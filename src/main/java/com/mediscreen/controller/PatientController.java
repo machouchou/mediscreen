@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mediscreen.exception.BodyNotValidException;
+import com.mediscreen.exception.PatientDuplicateException;
 import com.mediscreen.exception.PatientNotFoundException;
 import com.mediscreen.model.Patient;
 import com.mediscreen.model.Response;
@@ -60,7 +61,7 @@ public class PatientController {
 	
 	@RequestMapping(value="/patient")
 	@ResponseBody
-	public ResponseEntity<Response> createPatient(@NotNull @RequestBody final Patient patient) {
+	public ResponseEntity<Response> createPatient(@NotNull @RequestBody final Patient patient) throws PatientDuplicateException {
 		logger.info("createPatient()");
 		return patientService.savePatient(patient);
 	}

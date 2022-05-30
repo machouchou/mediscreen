@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.mediscreen.exception.PatientDuplicateException;
 import com.mediscreen.model.Patient;
 import com.mediscreen.model.Response;
 import com.mediscreen.repository.PatientRepository;
@@ -35,7 +36,7 @@ public class PatientServiceImpl implements IPatientService {
 	}
 
 	@Override
-	public ResponseEntity<Response> savePatient(Patient patient) {
+	public ResponseEntity<Response> savePatient(Patient patient) throws PatientDuplicateException {
 		String errorDescription = "";
 		if (patient == null) {
 			errorDescription = "Enter a valid Patient !"; 
@@ -45,7 +46,7 @@ public class PatientServiceImpl implements IPatientService {
 		
 		Patient patientResult = patientOpt.map(Function.identity()).orElse(null);
 		if (patientResult != null) {
-			throw new RuntimeException("Record already exists");
+			throw new PatientDuplicateException("Record already exists");
 		}
 		patientRepository.save(patient);
 		

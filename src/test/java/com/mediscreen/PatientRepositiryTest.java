@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import com.mediscreen.exception.PatientDuplicateException;
 import com.mediscreen.model.Patient;
 import com.mediscreen.repository.PatientRepository;
 import com.mediscreen.service.PatientServiceImpl;
@@ -34,7 +35,7 @@ public class PatientRepositiryTest {
 
 	// JUnit test for savePatient
 	@Test
-	public void save_newPatientTest_PatientSavedInListOfPatients() {
+	public void save_newPatientTest_PatientSavedInListOfPatients() throws PatientDuplicateException {
 		
 		//patientRepository.deleteByFirstNameAndLastName("Ramesh", "Sadou");
 		
