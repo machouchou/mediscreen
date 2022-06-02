@@ -13,7 +13,7 @@ public interface IPatientService {
 	
 	ResponseEntity<Response> savePatient(Patient patient) throws PatientDuplicateException;
 	
-	ResponseEntity<Response> getPatientById(int idPatient);
+	ResponseEntity<Response> getPatientById(int patientId);
 	
 	ResponseEntity<Response> updatePatient(Patient patient);
 	

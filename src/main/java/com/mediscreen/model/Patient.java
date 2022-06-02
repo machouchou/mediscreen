@@ -23,9 +23,9 @@ import lombok.NoArgsConstructor;
 public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_patien")
+	@Column(name = "patient_id")
 	@NotNull
-	private int idPatient;
+	private int patientId;
 	
 	@Column(name = "first_name", nullable = false)
 	@NotBlank(message = "The first name is mandatory")
@@ -53,13 +53,16 @@ public class Patient {
 		super();
 	}
 
-	public int getIdPatient() {
-		return idPatient;
+
+	public int getPatientId() {
+		return patientId;
 	}
 
-	public void setIdPatient(int idPatient) {
-		this.idPatient = idPatient;
+
+	public void setPatientId(int patientId) {
+		this.patientId = patientId;
 	}
+
 
 	public String getFirstName() {
 		return firstName;

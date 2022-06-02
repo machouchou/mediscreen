@@ -2,18 +2,18 @@ package com.mediscreen.model;
 
 import org.springframework.http.HttpStatus;
 
-public class Response {
+public class Response<T> {
 	private HttpStatus status;
-	private Object data;
+	private T data;
 	private String errorCode;
 	private String errorDescription;
 	public HttpStatus getStatus() {
 		return status;
 	}
-	public Object getData() {
+	public T getData() {
 		return data;
 	}
-	public void setData(Object data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 	public String getErrorCode() {

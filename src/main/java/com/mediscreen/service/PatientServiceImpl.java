@@ -56,13 +56,13 @@ public class PatientServiceImpl implements IPatientService {
 	}
 	
 	@Override
-	public ResponseEntity<Response> getPatientById(int idPatient) {
+	public ResponseEntity<Response> getPatientById(int patientId) {
 		String errorDescription = "";
-		if (idPatient == 0) {
+		if (patientId == 0) {
 			errorDescription = "Enter a valid idPatient !"; 
 			return utility.createResponseWithErrors(Constant.ERROR_MESSAGE_IDPATIENT_REQUIRED, errorDescription);
 		}
-		Patient patient = patientRepository.findById(idPatient).orElse(null);
+		Patient patient = patientRepository.findById(patientId).orElse(null);
 		
 		new Utility().createResponseWithSuccess(response, patient);
 		
@@ -76,7 +76,7 @@ public class PatientServiceImpl implements IPatientService {
 			errorDescription = "Enter a valid Patient !"; 
 			return utility.createResponseWithErrors(Constant.ERROR_MESSAGE_PATIENT_REQUIRED, errorDescription);
 		}
-		Patient existingPatient = patientRepository.findById(patient.getIdPatient()).orElse(null);
+		Patient existingPatient = patientRepository.findById(patient.getPatientId()).orElseThrow(null);
 		if (existingPatient == null) {
 			errorDescription = "Patient not found !"; 
 			return utility.createResponseWithErrors(Constant.ERROR_MESSAGE_PATIENT_REQUIRED, errorDescription);
@@ -98,11 +98,10 @@ public class PatientServiceImpl implements IPatientService {
 	public List<Patient> getPatients() {
 		return patientRepository.findAll();
 	}
-	
+
 	@Override
 	public Optional<Patient> getPatientByFirstNameAndLastName(String firstName, String lastName) {
 		return patientRepository.findByFirstNameAndLastName(firstName, lastName);
 	}
-	
 	
 }

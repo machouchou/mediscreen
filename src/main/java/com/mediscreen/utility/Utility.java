@@ -18,7 +18,7 @@ public class Utility {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	public <T>void createResponseWithSuccess(Response response, T data) {
+	public <T>void createResponseWithSuccess(Response<T> response, T data) {
 		response.setData(data);
 		response.setStatus(HttpStatus.OK);
 		response.setErrorCode(null);

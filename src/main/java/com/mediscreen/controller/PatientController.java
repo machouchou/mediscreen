@@ -55,8 +55,8 @@ public class PatientController {
 	}
 	
 	@GetMapping(value = "/patientById")
-	public ResponseEntity<Response> getPatientById(@RequestParam Integer idPatient) {
-		return patientService.getPatientById(idPatient);
+	public ResponseEntity<Response> getPatientById(@RequestParam Integer patientId) {
+		return patientService.getPatientById(patientId);
 	}
 	
 	@RequestMapping(value="/patient")
