@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-@AllArgsConstructor
+
 @NoArgsConstructor
 @Entity
 @Table(name="patient")

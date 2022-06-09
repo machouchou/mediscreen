@@ -75,7 +75,7 @@ public class PatientController {
 			
 
 			
-	@PostMapping( value = "/patientToSave")
+	/*@PostMapping( value = "/patientToSave")
 	public Patient savePatient(@RequestBody Patient patient) {
 		return patientRepository.save(patient);
 	
@@ -92,7 +92,7 @@ public class PatientController {
 		httpServletResponse.setStatus(201);
 		patientRepository.save(patient);
 		return "Patient saved with success";
-	}
+	}*/
 	
 	@GetMapping(value = "/patientByFirstAndLastName")
 	public Optional<Patient> getPatientByFirstAndLastName(@RequestParam String firstName, @RequestParam String lastName) {
