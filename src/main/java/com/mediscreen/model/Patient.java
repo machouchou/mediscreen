@@ -1,6 +1,7 @@
 package com.mediscreen.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -110,6 +111,27 @@ public class Patient {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, birthDate, firstName, lastName, patientId, phone, sex);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Patient other = (Patient) obj;
+		return Objects.equals(address, other.address) && Objects.equals(birthDate, other.birthDate)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
+				&& patientId == other.patientId && Objects.equals(phone, other.phone) && Objects.equals(sex, other.sex);
 	}
 	
 	

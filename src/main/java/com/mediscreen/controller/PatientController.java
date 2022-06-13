@@ -59,7 +59,7 @@ public class PatientController {
 		return patientService.getPatientById(patientId);
 	}
 	
-	@RequestMapping(value="/patient")
+	@PostMapping(value="/patient")
 	@ResponseBody
 	public ResponseEntity<Response> createPatient(@NotNull @RequestBody final Patient patient) throws PatientDuplicateException {
 		logger.info("createPatient()");
@@ -72,28 +72,7 @@ public class PatientController {
 		return patientService.updatePatient(patient);
 			
 	}
-			
-
-			
-	/*@PostMapping( value = "/patientToSave")
-	public Patient savePatient(@RequestBody Patient patient) {
-		return patientRepository.save(patient);
-	
-}
-	@PostMapping("/savePatient")
-	public String savePatient(@Valid @RequestBody Patient patient, BindingResult bindingResult,
-			HttpServletResponse httpServletResponse) {
-		if (bindingResult.hasErrors()) {
-			return new PatientNotFoundException(
-					"The patient provided : '" + patient.toString() + "' doesn't satisfy the required field: '"
-							+ bindingResult.getFieldError().getDefaultMessage() + "'.").toString();
-		}
-
-		httpServletResponse.setStatus(201);
-		patientRepository.save(patient);
-		return "Patient saved with success";
-	}*/
-	
+				
 	@GetMapping(value = "/patientByFirstAndLastName")
 	public Optional<Patient> getPatientByFirstAndLastName(@RequestParam String firstName, @RequestParam String lastName) {
 		return patientService.getPatientByFirstNameAndLastName(firstName, lastName);

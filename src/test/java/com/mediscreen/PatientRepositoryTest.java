@@ -1,43 +1,66 @@
 package com.mediscreen;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
 import com.mediscreen.exception.PatientDuplicateException;
 import com.mediscreen.model.Patient;
+import com.mediscreen.model.Response;
 import com.mediscreen.repository.PatientRepository;
 import com.mediscreen.service.PatientServiceImpl;
 
 @SpringBootTest
-//@RunWith(MockitoJUnitRunner.class)
 @TestPropertySource("/applicationTest.properties")
-public class PatientRepositiryTest {
+@Transactional
+@DirtiesContext
+public class PatientRepositoryTest {
+	
+	final Logger logger = LogManager.getLogger(PatientRepositoryTest.class);
 	
 	@Autowired
 	private PatientRepository patientRepository;
 	
 	@Autowired
 	PatientServiceImpl patientService;
+	
+	@BeforeEach
+    public void setup() {
+		savePatients(); 
+    }
+	
+	@AfterEach
+    public void emptyTables() {
+		patientRepository.deleteAll(); 
+		
+		
+    }
 
 	// JUnit test for savePatient
 	@Test
 	public void save_newPatientTest_PatientSavedInListOfPatients() throws PatientDuplicateException {
-		
-		//patientRepository.deleteByFirstNameAndLastName("Ramesh", "Sadou");
 		
 		String dateString = "1999-06-13";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -58,9 +81,8 @@ public class PatientRepositiryTest {
 	
 	@Test
 	public void findAllPatientsTest_ListOfPatients() {
-		
 		//Arrange
-		String firstName = "Ramesh";
+		String firstName = "Geremy";
 		//Act
 		List<Patient> lPatients = patientService.getPatients();
 		
@@ -71,6 +93,60 @@ public class PatientRepositiryTest {
 	@Test
 	public void savePatientsTest_ListOfPatientsCreated() {
 		
+		//Act
+		List<Patient> lPatients = patientRepository.findAll();
+		
+		assertNotEquals(Collections.EMPTY_LIST, lPatients);
+		assertEquals(3, lPatients.size());
+	}
+
+	
+
+	// JUnit test for updatePatient
+	@Test
+	public void update_existingPatientTest_PatientUpdatedInListOfPatients() {
+		logger.debug("Calling update patient");
+		
+		ResponseEntity<Response> response  = patientService.getPatientById(3);
+		
+		String dateString = "1999-06-13";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		 
+		Patient existingPatient = (Patient)response.getBody().getData();
+		existingPatient.setFirstName("Ramesh");
+		existingPatient.setLastName("Dupuis");
+		existingPatient.setBirthDate(LocalDate.parse(dateString, formatter));
+		existingPatient.setSex("M");
+		existingPatient.setAddress("6 rue lamartine 75009 Paris");
+		existingPatient.setPhone("0603367020");
+		logger.error("Calling update patient");
+		ResponseEntity<Response> patientResult = patientService.updatePatient(existingPatient);
+		
+		Patient updatedPatient = (Patient)patientResult.getBody().getData();
+		Assertions.assertThat(updatedPatient.getFirstName().equalsIgnoreCase("Ramesh"));
+	}
+	
+	// JUnit test for getPatientById
+	@Test
+	public void getPatientByFirstAndLastname_existingPatientTest_PatientFound() {
+		
+		Optional<Patient> patient = patientService.getPatientByFirstNameAndLastName("Clara", "Lopes");
+		
+		assertNotNull(patientService.getPatientByFirstNameAndLastName("Clara", "Lopes").get());
+	}
+	
+	@Test
+	public void getPatientByIdTest_existingPatientTest_PatientFound() {
+		
+		ResponseEntity<Response> response =  patientService.getPatientById(2);
+		Patient patient = (Patient)response.getBody().getData();
+		
+		Optional<Patient> patientById = patientRepository.findById(2);
+		
+		assertTrue(patient.equals(patientById.get()));
+	}
+		
+	private void savePatients() {
 		String dateString1 = "2008-06-19";
 		String dateString2 = "2010-07-03";
 		String dateString3 = "2012-09-25";
@@ -106,49 +182,5 @@ public class PatientRepositiryTest {
 		patients.add(patient3);
 		
 		patientRepository.saveAll(patients);
-		
-		//Act
-		List<Patient> lPatients = patientRepository.findAll();
-		
-		assertNotEquals(Collections.EMPTY_LIST, lPatients);
-		assertEquals(3, lPatients.size());
 	}
-
-	// JUnit test for updatePatient
-		@Test
-		public void update_existingPatientTest_PatientUpdatedInListOfPatients() {
-			
-			patientService.getPatientById(4);
-			
-			String dateString = "1999-06-13";
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			 
-			Patient existingPatient = new Patient();
-			existingPatient.setFirstName("Ramesh");
-			existingPatient.setLastName("Dupuis");
-			existingPatient.setBirthDate(LocalDate.parse(dateString, formatter));
-			existingPatient.setSex("M");
-			existingPatient.setAddress("6 rue lamartine 75009 Paris");
-			existingPatient.setPhone("0603367020");
-			
-			patientService.updatePatient(existingPatient);
-			
-			
-			Assertions.assertThat(existingPatient.getFirstName().equalsIgnoreCase("Ramesh"));
-		}
-		
-		// JUnit test for getPatientById
-		@Test
-		public void getPatientByFirstAndLastname_existingPatientTest_PatientFound() {
-				
-			
-			assertTrue(patientService.getPatientByFirstNameAndLastName("Alex", "Lopes").isPresent());
-		}
-		
-		@Test
-		public void getPatientByIdTest_existingPatientTest_PatientFound() {
-				
-			
-			assertFalse(patientService.getPatientById(2).equals(patientRepository.findById(2)));
-		}
 }

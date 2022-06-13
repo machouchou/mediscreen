@@ -37,6 +37,7 @@ public class PatientServiceImpl implements IPatientService {
 
 	@Override
 	public ResponseEntity<Response> savePatient(Patient patient) throws PatientDuplicateException {
+		logger.debug("Calling create patient");
 		String errorDescription = "";
 		if (patient == null) {
 			errorDescription = "Enter a valid Patient !"; 
@@ -57,6 +58,7 @@ public class PatientServiceImpl implements IPatientService {
 	
 	@Override
 	public ResponseEntity<Response> getPatientById(int patientId) {
+		logger.debug("Calling get patient by Id");
 		String errorDescription = "";
 		if (patientId == 0) {
 			errorDescription = "Enter a valid idPatient !"; 
@@ -71,6 +73,7 @@ public class PatientServiceImpl implements IPatientService {
 
 	@Override
 	public ResponseEntity<Response> updatePatient(Patient patient) {
+		logger.debug("Calling update patient info");
 		String errorDescription = "";
 		if (patient == null) {
 			errorDescription = "Enter a valid Patient !"; 
@@ -96,12 +99,14 @@ public class PatientServiceImpl implements IPatientService {
 	
 	@Override
 	public List<Patient> getPatients() {
+		logger.debug("Calling get all patients");
 		return patientRepository.findAll();
 	}
 
 	@Override
 	public Optional<Patient> getPatientByFirstNameAndLastName(String firstName, String lastName) {
-		return patientRepository.findByFirstNameAndLastName(firstName, lastName);
+		logger.debug("Calling get patient by first name and last name");
+		return patientRepository.findByFirstNameAndLastName(firstName, lastName).stream().findFirst();
 	}
 	
 }
